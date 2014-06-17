@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<a:ZeeapManifest xmlns:a="clr-namespace:Djed.Qt;assembly=Djed.Qt">
+  <a:ZeeapManifest.Metadata>
+    <a:ZeeapManifestMetaData>
+      <a:ZeeapManifestMetaData.AppName>ZcBoard</a:ZeeapManifestMetaData.AppName>
+      <a:ZeeapManifestMetaData.Author>ZeeCrowd</a:ZeeapManifestMetaData.Author>
+      <a:ZeeapManifestMetaData.Version>100</a:ZeeapManifestMetaData.Version>
+      <a:ZeeapManifestMetaData.Url>htpp://</a:ZeeapManifestMetaData.Url>
+      <a:ZeeapManifestMetaData.AppConfig>ZcBoard.cfg</a:ZeeapManifestMetaData.AppConfig>
+    </a:ZeeapManifestMetaData>
+  </a:ZeeapManifest.Metadata>
+</a:ZeeapManifest>
