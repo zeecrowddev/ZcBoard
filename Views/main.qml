@@ -84,6 +84,30 @@ Zc.AppView
         updatePosition(image,imageDefinition.position);
     }
 
+    function updateWebView(idItem,webViewDefinition)
+    {
+        console.log(">> CREATEWEBVIEW " + idItem)
+        var webView = null;
+        if (Presenter.instance[idItem] === undefined ||
+                Presenter.instance[idItem] === null)
+        {
+            webView = webViewComponent.createObject(board.internalBoard);
+            webView.idItem = idItem;
+            Presenter.instance[idItem] = webView;
+        }
+        else
+        {
+            webView = Presenter.instance[idItem];
+        }
+
+        if (webView === null)
+            return;
+
+        webView.url = webViewDefinition.url
+
+        updatePosition(webView,webViewDefinition.position);
+    }
+
     function updatePosition(element,pos)
     {
 
@@ -95,15 +119,29 @@ Zc.AppView
         else
         {
             var position = pos.split("|");
-            element.x = position[0];
-            element.y = position[1];
-            element.z = position[2];
+
+            if (position[0] !== "NaN")
+                element.x = position[0];
+            else
+                element.x = 0
+
+            if (position[1] !== "NaN")
+                element.y = position[1];
+            else
+                element.y = 0
+
+            if (position[2] !== "NaN")
+                element.z = position[2];
+            else
+                element.z = 0
+
             element.width = position[3];
             element.height = position[4];
 
+            if (element.z > mainView.zMax)
+                zMax = element.z + 1;
 
             board.resize()
-
         }
     }
 
@@ -117,12 +155,24 @@ Zc.AppView
         id : zcResourceDescriptorId
     }
 
+
+    property int zMax : 0;
+
+    function getDefaultPosition()
+    {
+        var x = mainView.width / 2 - 100
+        var y = mainView.height / 2 - 100
+        var z = mainView.zMax + 1;
+
+        return x  +"|" + y + "|" + z + "|200|200";
+    }
+
     toolBarActions :
         [
         Action {
             id: closeAction
             shortcut: "Ctrl+X"
-            iconSource: "qrc:/ZcPostIt/Resources/close.png"
+            iconSource: "qrc:/ZcBoard/Resources/close.png"
             tooltip : "Close Aplication"
             onTriggered:
             {
@@ -132,13 +182,13 @@ Zc.AppView
         Action {
             id: plusYellow
             tooltip : "Add a yellow PostIt"
-            iconSource : "qrc:/ZcPostIt/Resources/postit_yellow_icon.png"
+            iconSource : "qrc:/ZcBoard/Resources/postit_yellow_icon.png"
             onTriggered:
             {
                 var idItem = generateId();
                 var element = {}
                 element.type = "PostIt"
-                element.position =  "0|0|0|200|200"
+                element.position = mainView.getDefaultPosition()
                 element.color = "yellow"
                 element.text = ""
                 element.id = idItem
@@ -148,10 +198,20 @@ Zc.AppView
         Action {
             id: plusResource
             tooltip : "Add a resource"
-            iconSource : ""
+            iconSource : "qrc:/ZcBoard/Resources/plus.png"
             onTriggered:
             {
                 fileDialog.open();
+            }
+        }
+        ,
+        Action {
+            id: addUrl
+            tooltip : "Add a web page"
+            iconSource : "qrc:/ZcBoard/Resources/addUrl.png"
+            onTriggered:
+            {
+                showLoader("qrc:/ZcBoard/Views/WebViewer.qml")
             }
         }
 
@@ -238,7 +298,7 @@ Zc.AppView
             }
 
             onPostItTextChanged:
-            {              
+            {
 
                 if (visible)
                 {
@@ -250,7 +310,6 @@ Zc.AppView
 
         }
     }
-
 
     Component
     {
@@ -264,6 +323,31 @@ Zc.AppView
 
 
             onDeleteImage:
+            {
+                elementDefinition.deleteItem(idItem);
+            }
+
+            onPositionChanged:
+            {
+                var o =  Tools.parseDatas(elementDefinition.getItem(idItem,""));
+                o.position =  valx + "|" + valy + "|" + valz + "|" + valw + "|" + valh + "|" + c;
+                elementDefinition.setItem(idItem,JSON.stringify(o));
+            }
+        }
+    }
+
+    Component
+    {
+        id : webViewComponent
+
+        WebViewElement
+        {
+            id : webViewId
+            boxWidth : mainView.width
+            boxHeight : mainView.height
+
+
+            onDeleteWebView:
             {
                 elementDefinition.deleteItem(idItem);
             }
@@ -308,7 +392,7 @@ Zc.AppView
 
                     var element = {}
                     element.type = uploadScreenId.type
-                    element.position =  "0|0|0|200|200"
+                    element.position =  mainView.getDefaultPosition()
                     element.id = uploadScreenId.idItem
                     elementDefinition.setItem(element.id,JSON.stringify(element));
                     uploadScreenId.visible = false;
@@ -361,6 +445,10 @@ Zc.AppView
                 {
                     mainView.updateImage(idItem,element)
                 }
+                else if (element.type === "Url")
+                {
+                    mainView.updateWebView(idItem,element)
+                }
             }
 
             onItemChanged :
@@ -401,10 +489,6 @@ Zc.AppView
     Board
     {
         id : board
-        //        parking: parkingPanelLeft
-        //        main : mainPanel
-
-        //        state : "show"
 
         onClicked:
         {
@@ -415,21 +499,24 @@ Zc.AppView
         }
     }
 
-    Item
+    function showLoader(source)
     {
-        id : mainPanel
-        anchors.fill: parent;
+        loader.source = source;
+        loader.visible = true
     }
 
-    Item
+    function hideLoader()
     {
-        id : parkingPanelLeft
-        anchors.top         : parent.top
-        anchors.right       : mainPanel.left
-        width               : mainPanel.width
-        height              : mainPanel.height
+        loader.source = "";
+        loader.visible = false
     }
 
+    Loader
+    {
+        id : loader
+        anchors.fill: parent
+        visible : false
+    }
 
     FileDialog
     {

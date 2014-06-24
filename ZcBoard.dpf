@@ -193,15 +193,8 @@
               <Items />
             </QtResourceFile>
           </Item>
-        </Items>
-      </QtResourceProjectFolder>
-    </Item>
-    <Item Template="QtResourceProjectFolder">
-      <QtResourceProjectFolder Name="Views">
-        <Properties />
-        <Items>
           <Item Template="QtResourceFile">
-            <QtResourceFile FileName="AnimationBase.qml">
+            <QtResourceFile FileName="plus.png">
               <Properties>
                 <BuildAction value="Compile" />
                 <Locale value="" />
@@ -211,7 +204,62 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
+            <QtResourceFile FileName="postit_yekkow_icon.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="back.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="next.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="addUrl.png">
+              <Properties>
+                <BuildAction value="Compile" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+        </Items>
+      </QtResourceProjectFolder>
+    </Item>
+    <Item Template="QtResourceProjectFolder">
+      <QtResourceProjectFolder Name="Views">
+        <Properties />
+        <Items>
+          <Item Template="QtResourceFile">
             <QtResourceFile FileName="Board.qml">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="ImageElement.qml">
               <Properties>
                 <BuildAction value="Compile" />
                 <Locale value="" />
@@ -287,9 +335,21 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
-            <QtResourceFile FileName="ImageElement.qml">
+            <QtResourceFile FileName="WebViewer.qml">
               <Properties>
                 <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="WebViewElement.qml">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
               </Properties>
               <Items />
             </QtResourceFile>

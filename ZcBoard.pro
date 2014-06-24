@@ -3,9 +3,10 @@ OTHER_FILES += \
     Packages/ZcBoard.cfg \
     Views/PostIt.qml \
     Views/mainPresenter.js \
-    Views/AnimationBase.qml \
     Views/Board.qml \
     Views/SplashScreen.qml \
     Views/Tools.js \
     Views/UploadScreen.qml \
-    Views/ImageElement.qml
+    Views/ImageElement.qml \
+    Views/WebViewer.qml \
+    Views/WebViewElement.qml
