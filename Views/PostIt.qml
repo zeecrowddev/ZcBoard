@@ -1,11 +1,11 @@
 /**
 * Copyright (c) 2010-2014 "Jabber Bees"
 *
-* This file is part of the ZcPostIt application for the Zeecrowd platform.
+* This file is part of the ZcBoard application for the Zeecrowd platform.
 *
 * Zeecrowd is an online collaboration platform [http://www.zeecrowd.com]
 *
-* ZcPostIt is free software: you can redistribute it and/or modify
+* ChatTabs is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -52,7 +52,7 @@ FocusScope
      //   color           : "#FBFC86"
         border { left: 30; top: 30; right: 30; bottom: 30 }
         anchors.fill    : parent
-        source                      : "qrc:/ZcPostIt/Resources/postit_" + postIt.postItColor +  ".png"
+        source                      : "qrc:/ZcBoard/Resources/postit_" + postIt.postItColor +  ".png"
 
     }
 
@@ -146,7 +146,7 @@ FocusScope
 
     Image
     {
-        source                      : "qrc:/ZcPostIt/Resources/tack.png"
+        source                      : "qrc:/ZcBoard/Resources/tack.png"
         anchors.top                 : parent.top
         anchors.horizontalCenter    : parent.horizontalCenter
     }
@@ -223,7 +223,6 @@ FocusScope
                     oldPostItY !== postIt.y
                     )
             {
-                console.log(">> positionChanged called")
                 postIt.positionChanged(postIt.x,postIt.y,postIt.z,postIt.width, postIt.height,postIt.postItColor)
             }
         }
@@ -292,7 +291,7 @@ FocusScope
     Image
     {
         id          :   close
-        source                      : "qrc:/ZcPostIt/Resources/bin.png"
+        source                      : "qrc:/ZcBoard/Resources/bin.png"
         width           : 30
         height          : 30
         x               : postIt.width - 50
@@ -312,7 +311,7 @@ FocusScope
     Image
     {
         id : tofront
-        source                      : "qrc:/ZcPostIt/Resources/toFront.png"
+        source                      : "qrc:/ZcBoard/Resources/toFront.png"
         width           : 30
         height          : 30
         anchors.top     : toback.top
@@ -331,7 +330,7 @@ FocusScope
     Image
     {
         id : validate
-        source                      : "qrc:/ZcPostIt/Resources/validate.png"
+        source                      : "qrc:/ZcBoard/Resources/validate.png"
         width           : 30
         height          : 30
         anchors.top     : tofront.top
@@ -355,7 +354,7 @@ FocusScope
     Image
     {
         id : toback
-        source                      : "qrc:/ZcPostIt/Resources/toBack.png"
+        source                      : "qrc:/ZcBoard/Resources/toBack.png"
         width           : 30
         height          : 30
         x               : 10

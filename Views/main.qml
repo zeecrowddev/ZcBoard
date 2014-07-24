@@ -1,11 +1,11 @@
 /**
 * Copyright (c) 2010-2014 "Jabber Bees"
 *
-* This file is part of the ZcPostIt application for the Zeecrowd platform.
+* This file is part of the ZcBoard application for the Zeecrowd platform.
 *
 * Zeecrowd is an online collaboration platform [http://www.zeecrowd.com]
 *
-* ZcPostIt is free software: you can redistribute it and/or modify
+* ChatTabs is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -36,7 +36,6 @@ Zc.AppView
 
     function updatePostIt(idItem,postItDefinition)
     {
-        console.log(">> CREATE POSTIT")
         var postIt = null;
         if (Presenter.instance[idItem] === undefined ||
                 Presenter.instance[idItem] === null)
@@ -44,7 +43,6 @@ Zc.AppView
             postIt = postItComponent.createObject(board.internalBoard);
             postIt.idItem = idItem;
             Presenter.instance[idItem] = postIt;
-            console.log(">> Presenter.instance[idItem] " + idItem + " " + postIt)
         }
         else
         {
@@ -62,7 +60,6 @@ Zc.AppView
 
     function updateImage(idItem,imageDefinition)
     {
-        console.log(">> CREATE IMAGE")
         var image = null;
         if (Presenter.instance[idItem] === undefined ||
                 Presenter.instance[idItem] === null)
@@ -86,7 +83,6 @@ Zc.AppView
 
     function updateWebView(idItem,webViewDefinition)
     {
-        console.log(">> CREATEWEBVIEW " + idItem)
         var webView = null;
         if (Presenter.instance[idItem] === undefined ||
                 Presenter.instance[idItem] === null)
@@ -104,6 +100,7 @@ Zc.AppView
             return;
 
         webView.url = webViewDefinition.url
+        webView.imageSource = documentFolder.getUrl(".web/" +idItem)
 
         updatePosition(webView,webViewDefinition.position);
     }
@@ -219,7 +216,7 @@ Zc.AppView
         Action {
             id: plusBlue
             tooltip : "Add a blue PostIt"
-            iconSource : "qrc:/ZcPostIt/Resources/postit_blue_icon.png"
+            iconSource : "qrc:/ZcBoard/Resources/postit_blue_icon.png"
             onTriggered:
             {
                 var idItem = generateId();
@@ -230,7 +227,7 @@ Zc.AppView
         Action {
             id: plusPink
             tooltip : "Add a pink PostIt"
-            iconSource : "qrc:/ZcPostIt/Resources/postit_pink_icon.png"
+            iconSource : "qrc:/ZcBoard/Resources/postit_pink_icon.png"
             onTriggered:
             {
                 var idItem = generateId();
@@ -242,7 +239,7 @@ Zc.AppView
         Action {
             id: plusGreen
             tooltip : "Add a green PostIt"
-            iconSource : "qrc:/ZcPostIt/Resources/postit_green_icon.png"
+            iconSource : "qrc:/ZcBoard/Resources/postit_green_icon.png"
             onTriggered:
             {
                 var idItem = generateId();
@@ -362,6 +359,19 @@ Zc.AppView
     }
 
 
+    function addUrlRessource(grabPath,url)
+    {
+
+        console.log(">> grabPath " + grabPath)
+
+        uploadScreenId.visible = true;
+        uploadScreenId.type = "Url"
+        uploadScreenId.idItem = generateId();
+        uploadScreenId.url = url;
+        documentFolder.uploadFile(".web/" + uploadScreenId.idItem,grabPath,queryStatusForAddUrlDocumentFolder)
+    }
+
+
     function generateId()
     {
         var d = new Date();
@@ -379,7 +389,7 @@ Zc.AppView
 
             Zc.StorageQueryStatus
             {
-                id : queryStatusDocumentFolder
+                id : queryStatusForAddRessourceDocumentFolder
 
 
                 onProgress :
@@ -394,6 +404,29 @@ Zc.AppView
                     element.type = uploadScreenId.type
                     element.position =  mainView.getDefaultPosition()
                     element.id = uploadScreenId.idItem
+                    elementDefinition.setItem(element.id,JSON.stringify(element));
+                    uploadScreenId.visible = false;
+                }
+            }
+
+            Zc.StorageQueryStatus
+            {
+                id : queryStatusForAddUrlDocumentFolder
+
+
+                onProgress :
+                {
+                    uploadScreenId.progressValue = value
+                }
+
+                onCompleted :
+                {
+
+                    var element = {}
+                    element.type = uploadScreenId.type
+                    element.position =  mainView.getDefaultPosition()
+                    element.id = uploadScreenId.idItem
+                    element.url = uploadScreenId.url
                     elementDefinition.setItem(element.id,JSON.stringify(element));
                     uploadScreenId.visible = false;
                 }
@@ -433,7 +466,6 @@ Zc.AppView
             function addOrUpdateItemFromIdItem(idItem)
             {
                 var value = elementDefinition.getItem(idItem,"");
-                console.log(">> itemchanged " +  value)
                 var element = Tools.parseDatas(value)
 
                 if (element.type === "PostIt")
@@ -526,17 +558,13 @@ Zc.AppView
         onAccepted:
         {
             var ressource = zcResourceDescriptorId.fromLocalFile(fileUrl)
-            console.log(">> MIMETYPE : " + zcResourceDescriptorId.mimeType)
-            console.log(">> isImage : " + zcResourceDescriptorId.isImage())
 
             if (zcResourceDescriptorId.isImage())
             {
-
                 uploadScreenId.visible = true;
                 uploadScreenId.type = "Image"
                 uploadScreenId.idItem = generateId();
-                console.log(">> upload " + uploadScreenId.idItem)
-                documentFolder.uploadFile(uploadScreenId.idItem,fileUrl,queryStatusDocumentFolder)
+                documentFolder.uploadFile(uploadScreenId.idItem,fileUrl,queryStatusForAddRessourceDocumentFolder)
             }
         }
     }

@@ -5,7 +5,7 @@
 *
 * Zeecrowd is an online collaboration platform [http://www.zeecrowd.com]
 *
-* ZcBoard is free software: you can redistribute it and/or modify
+* ChatTabs is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -42,10 +42,58 @@ FocusScope
     signal positionChanged(int valx,int valy,int valz, int valw, int valh, string c);
     signal deleteWebView(string idItem);
 
-    property alias url :  webViewId.url
+    property string url :  ""
+    property alias imageSource :  imageId.source
+
+
+    Component
+    {
+        id : webviewComponent
+
+        Rectangle
+        {
+            anchors.fill    : parent
+
+            color : "white"
+
+            border.width : 1
+            border.color : "black"
+
+            clip : true
+
+            ScrollView
+            {
+
+                anchors.fill: parent
+
+                style : ScrollViewStyle {}
+
+                WebView
+                {
+                    id              : webViewId
+
+                    anchors.fill: parent
+                }
+            }
+        }
+
+    }
+
+
+    Loader
+    {
+        id : webViewLoader
+
+        anchors.fill: imageContainer
+
+        visible : false
+    }
 
     Rectangle
     {
+
+        id : imageContainer
+
         anchors.fill    : parent
 
         color : "white"
@@ -55,21 +103,34 @@ FocusScope
 
         clip : true
 
-        ScrollView
+        Image
         {
+            id              : imageId
 
-            anchors.fill: parent
+            anchors.centerIn: parent
 
-            style : ScrollViewStyle {}
+            property double sourceRatio : sourceSize.width / sourceSize.height
+            property double  imageRatio : parent.width / parent.height
 
-            WebView
+            width :  sourceRatio > imageRatio ? parent.height * sourceRatio : parent.width
+            height : width /  sourceRatio
+
+            Image
             {
-                id              : webViewId
+                width : 50
+                height : 50
+                opacity : 0.5
 
-                anchors.fill: parent
+                anchors.centerIn: parent
+
+                source : "qrc:/ZcBoard/Resources/eye.png"
+
+
             }
+
         }
     }
+
 
     Item
     {
@@ -101,6 +162,22 @@ FocusScope
         property int oldmainWebViewX : 0
         property int oldmainWebViewY : 0
 
+        MouseArea
+        {
+            width : 50
+            height : 50
+
+            anchors.centerIn:  parent
+
+            onClicked:
+            {
+                webViewLoader.visible = true
+                webViewLoader.sourceComponent = webviewComponent
+                imageId.visible = false
+            }
+        }
+
+
         onReleased:
         {
             if ( oldmainWebViewX !== mainWebView.x ||
@@ -115,7 +192,7 @@ FocusScope
         {
             oldmainWebViewX = mainWebView.x
             oldmainWebViewY = mainWebView.y
- //           mainImage.state = "edition"
+            //           mainImage.state = "edition"
         }
     }
 

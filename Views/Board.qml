@@ -1,11 +1,11 @@
 /**
 * Copyright (c) 2010-2014 "Jabber Bees"
 *
-* This file is part of the ZcPostIt application for the Zeecrowd platform.
+* This file is part of the ZcBoard application for the Zeecrowd platform.
 *
 * Zeecrowd is an online collaboration platform [http://www.zeecrowd.com]
 *
-* ZcPostIt is free software: you can redistribute it and/or modify
+* ChatTabs is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -44,8 +44,6 @@ ScrollView
 
     function resize()
     {
-        console.log(">> resize")
-
         var vx = 0;
         var vy = 0;
 
@@ -68,9 +66,6 @@ ScrollView
 
         flickBoard.width = vx //+ 10
         flickBoard.height = vy //+ 10
-
-        console.log(">> flickBoard.width " + flickBoard.width)
-        console.log(">> flickBoard.height " + flickBoard.height)
     }
 
     anchors.fill: parent
