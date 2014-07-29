@@ -19,18 +19,40 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+Qt.include("Tools.js")
+
 var instance = new Object();
 
 function initPresenter()
 {   
     instance.activePostIt = null;
+    var forumsToDownload = []
 
-    instance.forEachInArray = function(array, delegate)
+    var dowloadInProgress = false;
+
+    instance.nextForumDownload = function ()
     {
-        for (var i=0;i<array.length;i++)
+        if (forumsToDownload.length > 0 && !dowloadInProgress)
         {
-            delegate(array[i]);
+            dowloadInProgress = true;
+            var idItem = forumsToDownload.pop();
+            mainView.loadForum(idItem)
         }
+    }
+
+    instance.startForumDownload = function(idItem)
+    {
+        if (existInArray(forumsToDownload, function(x){ return x === idItem }) )
+            return;
+
+        forumsToDownload.push(idItem)
+        instance.nextForumDownload();
+    }
+
+    instance.downloadForumFinished = function()
+    {
+        dowloadInProgress = false
+        instance.nextForumDownload();
     }
 
     instance.setActivePostIt = function(postIt)

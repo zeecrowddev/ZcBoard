@@ -35,6 +35,7 @@ Rectangle
     property string type : ""
     property string name : ""
     property string url : ""
+    //property string forum : ""
 
     Label
     {

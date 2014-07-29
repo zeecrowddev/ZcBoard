@@ -9,4 +9,6 @@ OTHER_FILES += \
     Views/UploadScreen.qml \
     Views/ImageElement.qml \
     Views/WebViewer.qml \
-    Views/WebViewElement.qml
+    Views/WebViewElement.qml \
+    Views/ForumViewer.qml \
+    Views/ForumElement.qml

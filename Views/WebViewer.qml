@@ -35,24 +35,6 @@ Item
     signal addUrl(string url)
 
 
-//    function grabVisible()
-//    {
-//        growDown.visible = true;
-//        growUp.visible = true;
-//        grabBorder.visible = true;
-//        grabValidate.visible = true;
-//        grabClose.visible = true;
-//    }
-
-//    function  grabUnvisible()
-//    {
-//        growDown.visible = false;
-//        growUp.visible = false;
-//        grabBorder.visible = false;
-//        grabValidate.visible = false;
-//        grabClose.visible = false;
-//    }
-
     Rectangle
     {
         anchors.fill: parent
@@ -125,22 +107,16 @@ Item
                     visible : webView.url.toString() !== null && webView.url.toString() !== "" && !webView.loading
     action : Action
     {
-    iconSource  : "qrc:/ZcBoard/Resources/ok2.png"
+    iconSource  : "qrc:/ZcBoard/Resources/validate.png"
     tooltip     : "Add to the board"
     onTriggered :
     {
-
-        console.log(">> mainView.x " + mainView.x)
 
         var tmpx = mainView.x + webViewContainer.x + scrollView.x + scrollView.flickableItem.contentX
         var tmpy = mainView.y + webViewContainer.y + scrollView.y + scrollView.flickableItem.contentY
         var val =  mainView.mapToItem(null,tmpx,tmpy)
 
         mainView.grabWindow(mainView.context.temporaryPath + "web_grap.png" ,val.x,val.y,webView.width,webView.height);
-
-        console.log(">> grabbed " + mainView.context.temporaryPath + "web_grab.png")
-
-        //mainView.uploadFile(mainView.context.temporaryPath + "_grap.png")
 
         mainView.addUrlRessource(mainView.context.temporaryPath + "web_grap.png",webView.url.toString())
         mainView.hideLoader()

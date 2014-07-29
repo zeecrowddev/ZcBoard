@@ -55,6 +55,8 @@
             <QtResourceFile FileName="addUrl.png">
               <Properties>
                 <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
               </Properties>
               <Items />
             </QtResourceFile>
@@ -87,6 +89,26 @@
                 <CopyToOutputDirectory value="Never" />
                 <CustomTool value="" />
                 <Locale value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="eye.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="forum.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
               </Properties>
               <Items />
             </QtResourceFile>
@@ -242,7 +264,7 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
-            <QtResourceFile FileName="eye.png">
+            <QtResourceFile FileName="cancel.png">
               <Properties>
                 <BuildAction value="Compile" />
               </Properties>
@@ -258,6 +280,16 @@
         <Items>
           <Item Template="QtResourceFile">
             <QtResourceFile FileName="Board.qml">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="ForumViewer.qml">
               <Properties>
                 <BuildAction value="Compile" />
                 <Locale value="" />
@@ -354,6 +386,16 @@
           </Item>
           <Item Template="QtResourceFile">
             <QtResourceFile FileName="WebViewer.qml">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="ForumElement.qml">
               <Properties>
                 <BuildAction value="Compile" />
                 <Locale value="" />

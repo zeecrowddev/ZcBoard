@@ -65,3 +65,25 @@ function forEachInArray(array, delegate)
         delegate(array[i]);
     }
 }
+
+function forEachInListModel(listModel, delegate)
+{
+    for (var i=0;i<listModel.count;i++)
+    {
+       delegate(listModel.get(i))
+    }
+
+    return null;
+}
+
+
+function existInArray(array, delegate)
+{
+    for (var i=0;i<array.length;i++)
+    {
+        if (delegate(array[i]))
+            return true;
+    }
+
+    return false;
+}

@@ -67,6 +67,8 @@ FocusScope
             height : width /  sourceRatio
 
         }
+
+
     }
 
     Item
@@ -176,6 +178,7 @@ FocusScope
         height          : 30
         x               : mainImage.width - 15
         y               : - 15
+
 
         MouseArea
         {

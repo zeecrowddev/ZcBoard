@@ -81,6 +81,60 @@ Zc.AppView
         updatePosition(image,imageDefinition.position);
     }
 
+    function updateForum(idItem,forumDefinition)
+    {
+        var forumElement = null;
+        if (Presenter.instance[idItem] === undefined ||
+                Presenter.instance[idItem] === null)
+        {
+            forumElement = forumComponent.createObject(board.internalBoard);
+            forumElement.idItem = idItem;
+            Presenter.instance[idItem] = forumElement;
+        }
+        else
+        {
+            forumElement = Presenter.instance[idItem];
+        }
+
+        if (forumElement === null)
+            return;
+
+
+        updatePosition(forumElement,forumDefinition.position);
+    }
+
+    function updateCommentInForum(idItem,forumDefinition)
+    {
+        var forumElement = null;
+        if (Presenter.instance[idItem] === undefined ||
+                Presenter.instance[idItem] === null)
+        {
+            forumElement = forumComponent.createObject(board.internalBoard);
+            forumElement.idItem = idItem;
+            Presenter.instance[idItem] = forumElement;
+        }
+        else
+        {
+            forumElement = Presenter.instance[idItem];
+        }
+
+        if (forumElement === null)
+            return;
+
+        if (forumDefinition.comments !== undefined && forumDefinition.comments !== null)
+        {
+            forumElement.updateComments(forumDefinition.comments)
+        }
+        else
+            forumElement.updateComments(null)
+
+        if (forumDefinition.title !== null && forumDefinition.title !== undefined)
+        {
+            forumElement.title = forumDefinition.title
+        }
+
+    }
+
     function updateWebView(idItem,webViewDefinition)
     {
         var webView = null;
@@ -108,38 +162,35 @@ Zc.AppView
     function updatePosition(element,pos)
     {
 
-        if (pos === "")
+        if (pos === "" || pos === undefined)
         {
-            element.x = 0;
-            element.y = 0;
+
+            pos = mainView.getDefaultPosition();
         }
+        var position = pos.split("|");
+
+        if (position[0] !== "NaN")
+            element.x = position[0];
         else
-        {
-            var position = pos.split("|");
+            element.x = 0
 
-            if (position[0] !== "NaN")
-                element.x = position[0];
-            else
-                element.x = 0
+        if (position[1] !== "NaN")
+            element.y = position[1];
+        else
+            element.y = 0
 
-            if (position[1] !== "NaN")
-                element.y = position[1];
-            else
-                element.y = 0
+        if (position[2] !== "NaN")
+            element.z = position[2];
+        else
+            element.z = 0
 
-            if (position[2] !== "NaN")
-                element.z = position[2];
-            else
-                element.z = 0
+        element.width = position[3];
+        element.height = position[4];
 
-            element.width = position[3];
-            element.height = position[4];
+        if (element.z > mainView.zMax)
+            zMax = element.z + 1;
 
-            if (element.z > mainView.zMax)
-                zMax = element.z + 1;
-
-            board.resize()
-        }
+        board.resize()
     }
 
     function closeTask()
@@ -211,6 +262,16 @@ Zc.AppView
                 showLoader("qrc:/ZcBoard/Views/WebViewer.qml")
             }
         }
+        ,
+        Action {
+            id: addForum
+            tooltip : "Add a little forum"
+            iconSource : "qrc:/ZcBoard/Resources/forum.png"
+            onTriggered:
+            {
+                showLoader("qrc:/ZcBoard/Views/ForumViewer.qml")
+            }
+        }
 
         /*,
         Action {
@@ -256,13 +317,6 @@ Zc.AppView
         height: parent.height
     }
 
-    UploadScreen
-    {
-        id : uploadScreenId
-        width : parent.width
-        height: parent.height
-        visible : false
-    }
 
     Component
     {
@@ -335,6 +389,31 @@ Zc.AppView
 
     Component
     {
+        id : forumComponent
+
+        ForumElement
+        {
+            id : imageId
+            boxWidth : mainView.width
+            boxHeight : mainView.height
+
+
+            onDeleteForum:
+            {
+                elementDefinition.deleteItem(idItem);
+            }
+
+            onPositionChanged:
+            {
+                var o =  Tools.parseDatas(elementDefinition.getItem(idItem,""));
+                o.position =  valx + "|" + valy + "|" + valz + "|" + valw + "|" + valh + "|" + c;
+                elementDefinition.setItem(idItem,JSON.stringify(o));
+            }
+        }
+    }
+
+    Component
+    {
         id : webViewComponent
 
         WebViewElement
@@ -358,12 +437,8 @@ Zc.AppView
         }
     }
 
-
     function addUrlRessource(grabPath,url)
     {
-
-        console.log(">> grabPath " + grabPath)
-
         uploadScreenId.visible = true;
         uploadScreenId.type = "Url"
         uploadScreenId.idItem = generateId();
@@ -371,11 +446,51 @@ Zc.AppView
         documentFolder.uploadFile(".web/" + uploadScreenId.idItem,grabPath,queryStatusForAddUrlDocumentFolder)
     }
 
+    function addComments(idItem,forum)
+    {
+        uploadScreenId.visible = true
+
+        uploadScreenId.type = "Forum"
+        uploadScreenId.idItem = idItem
+
+        documentFolder.putText(".forum/" + uploadScreenId.idItem + "_txt",forum,queryStatusForAddCommentDocumentFolder);
+    }
+
+
+    function createANewForum(idItem,forum)
+    {
+        if (idItem === null || idItem === "")
+        {
+            idItem = generateId();
+        }
+
+        var element = {}
+        element.type = "Forum"
+        element.id =idItem
+
+        elementDefinition.setItem(element.id,JSON.stringify(element));
+
+        uploadScreenId.visible = true
+
+        uploadScreenId.type = "Forum"
+        uploadScreenId.idItem = idItem
+
+        documentFolder.putText(".forum/" + uploadScreenId.idItem + "_txt",forum,queryStatusForAddCommentDocumentFolder);
+    }
 
     function generateId()
     {
         var d = new Date();
         return mainView.context.nickname + "_" + d.getTime();
+    }
+
+    function loadForum(idItem)
+    {
+        var query = queryStatusForGetForumDocumentFolderComponent.createObject(mainView)
+
+        query.idItem = idItem
+        documentFolder.getText(".forum/" + idItem  + "_txt",query);
+
     }
 
     Zc.CrowdActivity
@@ -431,6 +546,63 @@ Zc.AppView
                     uploadScreenId.visible = false;
                 }
             }
+
+            Zc.StorageQueryStatus
+            {
+                id : queryStatusForAddCommentDocumentFolder
+
+                onProgress :
+                {
+                    uploadScreenId.progressValue = value
+                }
+
+                onCompleted :
+                {
+//                    // Si l'element n'existe pas on le crée
+//                    var element = {}
+//                    element.type = uploadScreenId.type
+//                    element.id = uploadScreenId.idItem
+
+//                    elementDefinition.setItem(element.id,JSON.stringify(element));
+
+                    // on notifie que le comment a changé
+                    senderCommentNotify.sendMessage("",uploadScreenId.idItem)
+
+                    uploadScreenId.visible = false;
+                }
+            }
+
+            Component
+            {
+                id : queryStatusForGetForumDocumentFolderComponent
+
+                Zc.StorageQueryStatus
+                {
+                    id : queryStatusForGetForumDocumentFolder
+
+
+                    property string idItem : ""
+
+                    onProgress :
+                    {
+                        //       uploadScreenId.progressValue = value
+                    }
+
+                    onCompleted :
+                    {
+                        var value = elementDefinition.getItem(idItem,"");
+                        var element = Tools.parseDatas(value)
+
+                        var content = Tools.parseDatas(sender.text)
+                        element.title = content.title
+                        element.comments = content.comments
+
+                        updateCommentInForum(idItem,element)
+
+                        Presenter.instance.downloadForumFinished();
+                    }
+                }}
+
         }
 
 
@@ -452,7 +624,12 @@ Zc.AppView
                     {
                         Tools.forEachInArray( items ,function (x)
                         {
-                            elementDefinition.addOrUpdateItemFromIdItem(x)
+                            var type =elementDefinition.addOrUpdateItemFromIdItem(x)
+
+                            if (type === "Forum")
+                            {
+                                Presenter.instance.startForumDownload(x);
+                            }
                         })
                     }
                 }
@@ -481,6 +658,13 @@ Zc.AppView
                 {
                     mainView.updateWebView(idItem,element)
                 }
+                else if (element.type === "Forum")
+                {
+                    mainView.updateForum(idItem,element)
+                }
+
+                return element.type;
+
             }
 
             onItemChanged :
@@ -496,6 +680,24 @@ Zc.AppView
                 Presenter.instance[idItem].visible = false;
                 Presenter.instance[idItem].parent === null;
                 Presenter.instance[idItem] = null;
+            }
+        }
+
+
+        Zc.MessageSender
+        {
+            id      : senderCommentNotify
+            subject : "Comments"
+        }
+
+        Zc.MessageListener
+        {
+            id      : listenerCommentNotify
+            subject : "Comments"
+
+            onMessageReceived :
+            {
+                Presenter.instance.startForumDownload(message.body);
             }
         }
 
@@ -568,4 +770,15 @@ Zc.AppView
             }
         }
     }
+
+    UploadScreen
+    {
+        id : uploadScreenId
+        width : parent.width
+        height: parent.height
+        visible : false
+
+        z : 1000
+    }
+
 }
