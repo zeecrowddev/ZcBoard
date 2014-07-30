@@ -68,6 +68,13 @@ FocusScope
 
         }
 
+        Label
+        {
+            anchors.centerIn: parent
+            text : "Loading ... " + Math.round(imageId.progress * 100) + "%"
+            visible : imageId.status !== Image.Ready
+        }
+
 
     }
 
