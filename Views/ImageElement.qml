@@ -117,6 +117,11 @@ FocusScope
             oldmainImageY = mainImage.y
  //           mainImage.state = "edition"
         }
+
+        onClicked:
+        {
+            mainView.idItemFocused = idItem
+        }
     }
 
     onStateChanged:
@@ -144,6 +149,9 @@ FocusScope
         color : "white"
         border.width    : 2
         border.color    : "black"
+
+        visible : idItem === mainView.idItemFocused
+
 
         width           : 20
         height          : 20
@@ -179,6 +187,7 @@ FocusScope
         x               : mainImage.width - 15
         y               : - 15
 
+        visible : idItem === mainView.idItemFocused
 
         MouseArea
         {
@@ -198,6 +207,8 @@ FocusScope
         anchors.top     : toback.top
         anchors.left    : toback.right
 
+        visible : idItem === mainView.idItemFocused
+
         MouseArea
         {
             anchors.fill: parent
@@ -216,6 +227,8 @@ FocusScope
         height          : 30
         x               : -15
         y               : -15
+
+        visible : idItem === mainView.idItemFocused
 
         MouseArea
         {

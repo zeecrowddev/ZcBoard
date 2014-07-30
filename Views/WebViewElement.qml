@@ -46,50 +46,6 @@ FocusScope
     property string url :  ""
     property alias imageSource :  imageId.source
 
-
-    Component
-    {
-        id : webviewComponent
-
-        Rectangle
-        {
-            anchors.fill    : parent
-
-            color : "white"
-
-            border.width : 1
-            border.color : "black"
-
-            clip : true
-
-            ScrollView
-            {
-
-                anchors.fill: parent
-
-                style : ScrollViewStyle {}
-
-                WebView
-                {
-                    id              : webViewId
-
-                    anchors.fill: parent
-                }
-            }
-        }
-
-    }
-
-
-    Loader
-    {
-        id : webViewLoader
-
-        anchors.fill: imageContainer
-
-        visible : false
-    }
-
     Rectangle
     {
 
@@ -172,9 +128,8 @@ FocusScope
 
             onClicked:
             {
-                webViewLoader.visible = true
-                webViewLoader.sourceComponent = webviewComponent
-                imageId.visible = false
+                Qt.openUrlExternally(mainWebView.url)
+
             }
         }
 
@@ -194,6 +149,11 @@ FocusScope
             oldmainWebViewX = mainWebView.x
             oldmainWebViewY = mainWebView.y
             //           mainImage.state = "edition"
+        }
+
+        onClicked:
+        {
+            mainView.idItemFocused = idItem
         }
     }
 
@@ -228,6 +188,8 @@ FocusScope
         x               : mainWebView.width - 10
         y               : mainWebView.height - 10
 
+        visible : idItem === mainView.idItemFocused
+
         MouseArea
         {
             id : growMouseArea
@@ -257,6 +219,8 @@ FocusScope
         x               : mainWebView.width - 15
         y               : - 15
 
+        visible : idItem === mainView.idItemFocused
+
         MouseArea
         {
             id : closeMouseArea
@@ -274,6 +238,8 @@ FocusScope
         height          : 30
         anchors.top     : toback.top
         anchors.left    : toback.right
+
+        visible : idItem === mainView.idItemFocused
 
         MouseArea
         {
@@ -293,6 +259,8 @@ FocusScope
         height          : 30
         x               : -15
         y               : -15
+
+        visible : idItem === mainView.idItemFocused
 
         MouseArea
         {

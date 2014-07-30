@@ -49,7 +49,7 @@ FocusScope
     BorderImage
     {
         id              : activeBorder
-     //   color           : "#FBFC86"
+        //   color           : "#FBFC86"
         border { left: 30; top: 30; right: 30; bottom: 30 }
         anchors.fill    : parent
         source                      : "qrc:/ZcBoard/Resources/postit_" + postIt.postItColor +  ".png"
@@ -70,34 +70,34 @@ FocusScope
                 readOnly    : false
                 focus       : true
             }
-
-
             PropertyChanges
             {
                 target      : mouseArea.anchors;
                 bottom     : mouseAreaItem.top
             }
 
-            PropertyChanges
-            {
-                target      : grow
-                visible     : true
-            }
-            PropertyChanges
-            {
-                target      : close
-                visible     : true
-            }
-            PropertyChanges
-            {
-                target      : toback
-                visible     : true
-            }
-            PropertyChanges
-            {
-                target      : tofront
-                visible     : true
-            }
+
+
+            //            PropertyChanges
+            //            {
+            //                target      : grow
+            //                visible     : true
+            //            }
+            //            PropertyChanges
+            //            {
+            //                target      : close
+            //                visible     : true
+            //            }
+            //            PropertyChanges
+            //            {
+            //                target      : toback
+            //                visible     : true
+            //            }
+            //            PropertyChanges
+            //            {
+            //                target      : tofront
+            //                visible     : true
+            //            }
         },
         State
         {
@@ -114,32 +114,33 @@ FocusScope
                 target      : mouseArea.anchors;
                 bottom     : postIt.bottom
             }
-            PropertyChanges
-            {
-                target      : grow
-                visible    : false
-            }
-            PropertyChanges
-            {
-                target      : close
-                visible    : false
-            }
-            PropertyChanges
-            {
-                target      : toback
-                visible     : false
-            }
-            PropertyChanges
-            {
-                target      : tofront
-                visible     : false
-            }
-            PropertyChanges
-            {
-                target      : validate
-                visible     : false
-                enabled     : false
-            }
+
+            //            PropertyChanges
+            //            {
+            //                target      : grow
+            //                visible    : false
+            //            }
+            //            PropertyChanges
+            //            {
+            //                target      : close
+            //                visible    : false
+            //            }
+            //            PropertyChanges
+            //            {
+            //                target      : toback
+            //                visible     : false
+            //            }
+            //            PropertyChanges
+            //            {
+            //                target      : tofront
+            //                visible     : false
+            //            }
+            //            PropertyChanges
+            //            {
+            //                target      : validate
+            //                visible     : false
+            //                enabled     : false
+            //            }
         }
     ]
 
@@ -191,7 +192,7 @@ FocusScope
             onTextChanged:
             {
                 if (postIt.state === "edition")
-                 {
+                {
                     validate.visible = true;
                     validate.enabled = true;
                 }
@@ -233,6 +234,11 @@ FocusScope
             oldPostItY = postIt.y
             postIt.state = "edition"
         }
+
+        onClicked:
+        {
+            mainView.idItemFocused = idItem
+        }
     }
 
     onStateChanged:
@@ -262,6 +268,7 @@ FocusScope
         border.width    : 2
         border.color    : "blue"
 
+        visible : idItem === mainView.idItemFocused
 
         width           : 20
         height          : 20
@@ -297,6 +304,8 @@ FocusScope
         x               : postIt.width - 50
         y               : 0
 
+        visible : idItem === mainView.idItemFocused
+
         MouseArea
         {
             id : closeMouseArea
@@ -316,6 +325,8 @@ FocusScope
         height          : 30
         anchors.top     : toback.top
         anchors.left    : toback.right
+
+        visible : idItem === mainView.idItemFocused
 
         MouseArea
         {
@@ -339,6 +350,7 @@ FocusScope
         visible : false
         enabled : false
 
+
         MouseArea
         {
             anchors.fill: parent
@@ -347,6 +359,7 @@ FocusScope
                 postIt.postItTextChanged(textArea.text)
                 validate.visible = false;
                 enabled.visible = false;
+                mainView.idItemFocused = ""
             }
         }
     }
@@ -359,6 +372,8 @@ FocusScope
         height          : 30
         x               : 10
         y               : 0
+
+        visible : idItem === mainView.idItemFocused
 
         MouseArea
         {

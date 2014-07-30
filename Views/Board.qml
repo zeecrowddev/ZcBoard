@@ -81,5 +81,14 @@ ScrollView
             height = parent.height// - 10
             width = parent.width// - 10
         }
+
+        MouseArea
+        {
+            anchors.fill: parent
+
+            onClicked: mainView.idItemFocused = false
+        }
+
+
     }
 }

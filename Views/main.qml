@@ -76,7 +76,7 @@ Zc.AppView
         if (image === null)
             return;
 
-        image.imageSource = documentFolder.getUrl(idItem)
+        image.imageSource = documentFolder.getUrl(".image/"+ idItem)
 
         updatePosition(image,imageDefinition.position);
     }
@@ -137,6 +137,8 @@ Zc.AppView
 
     function updateWebView(idItem,webViewDefinition)
     {
+         console.log(">> webViewDefinition.url " + webViewDefinition.url)
+
         var webView = null;
         if (Presenter.instance[idItem] === undefined ||
                 Presenter.instance[idItem] === null)
@@ -205,6 +207,7 @@ Zc.AppView
 
 
     property int zMax : 0;
+    property string idItemFocused : ""
 
     function getDefaultPosition()
     {
@@ -376,6 +379,7 @@ Zc.AppView
             onDeleteImage:
             {
                 elementDefinition.deleteItem(idItem);
+                documentFolder.deleteFile(".image/"+idItem,null)
             }
 
             onPositionChanged:
@@ -401,6 +405,7 @@ Zc.AppView
             onDeleteForum:
             {
                 elementDefinition.deleteItem(idItem);
+               documentFolder.deleteFile(".forum/" + idItem  +"_txt",null)
             }
 
             onPositionChanged:
@@ -426,6 +431,7 @@ Zc.AppView
             onDeleteWebView:
             {
                 elementDefinition.deleteItem(idItem);
+                documentFolder.deleteFile(".web/" +idItem ,null)
             }
 
             onPositionChanged:
@@ -542,6 +548,7 @@ Zc.AppView
                     element.position =  mainView.getDefaultPosition()
                     element.id = uploadScreenId.idItem
                     element.url = uploadScreenId.url
+
                     elementDefinition.setItem(element.id,JSON.stringify(element));
                     uploadScreenId.visible = false;
                 }
@@ -766,7 +773,7 @@ Zc.AppView
                 uploadScreenId.visible = true;
                 uploadScreenId.type = "Image"
                 uploadScreenId.idItem = generateId();
-                documentFolder.uploadFile(uploadScreenId.idItem,fileUrl,queryStatusForAddRessourceDocumentFolder)
+                documentFolder.uploadFile(".image/" + uploadScreenId.idItem,fileUrl,queryStatusForAddRessourceDocumentFolder)
             }
         }
     }

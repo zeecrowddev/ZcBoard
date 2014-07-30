@@ -171,6 +171,11 @@ FocusScope
             oldmainForumY = mainForum.y
             //           mainImage.state = "edition"
         }
+
+        onClicked:
+        {
+            mainView.idItemFocused = idItem
+        }
     }
 
 
@@ -288,6 +293,8 @@ FocusScope
     {
         id : grow
 
+        visible : idItem === mainView.idItemFocused
+
         color : "white"
         border.width    : 2
         border.color    : "black"
@@ -326,6 +333,8 @@ FocusScope
         x               : mainForum.width - 15
         y               : - 15
 
+        visible : idItem === mainView.idItemFocused
+
         MouseArea
         {
             id : closeMouseArea
@@ -338,6 +347,9 @@ FocusScope
     Image
     {
         id : tofront
+
+        visible : idItem === mainView.idItemFocused
+
         source                      : "qrc:/ZcBoard/Resources/toFront.png"
         width           : 30
         height          : 30
@@ -362,6 +374,8 @@ FocusScope
         height          : 30
         x               : -15
         y               : -15
+
+        visible : idItem === mainView.idItemFocused
 
         MouseArea
         {
