@@ -75,53 +75,51 @@ FocusScope
         border.width : 1
         border.color : "black"
 
-        clip : true
 
     }
 
 
-    TextArea
+
+    ToolBar
     {
-        id : textAreaComment
-        anchors
+        id : toolBarComments
+        style: ToolBarStyle {}
+
+        anchors.top : parent.top
+
+        width : parent.width
+
+        Label
         {
-            top : toolBarComments.bottom
-            topMargin : 5
-            horizontalCenter : parent.horizontalCenter
+            height : parent.height
+            text : mainForum.title
+            font.pixelSize: 16
         }
-
-        style : TextAreaStyle {  transientScrollBars : false; backgroundColor: Qt.lighter("#ff6600") }
-
-        width : parent.width - 10
-
-        height : mainForum.state == "addComments" ? 100 : 0
-        visible : mainForum.state == "addComments"
-
-        wrapMode: TextEdit.WordWrap
     }
 
-
-    ListView
+    ScrollView
     {
-        id : commentListView
 
         anchors.top : textAreaComment.bottom
         anchors.left : parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
 
-        model : comments
+        style :  ScrollViewStyle { transientScrollBars : false }
 
-        delegate: commentDelegateComponent
+        ListView
+        {
+            id : commentListView
 
-//            CommentDelegate
-//        {
-//        contactImageSource : activity.getParticipantImageUrl(model.who)
+            anchors.fill: parent
 
-//        Component.onCompleted:
-//        {
-//        }
-//    }
+            model : comments
+
+            delegate: commentDelegateComponent
+
+            //header: Rectangle{ color : "lightgrey"; width : parent.width; height: 25; Label { anchors.left : parent.left; anchors.leftMargin : 5; text : title}}
+
+        }
     }
 
 
@@ -174,48 +172,45 @@ FocusScope
 
         onClicked:
         {
+            console.log(">> CLICKED")
             mainView.idItemFocused = idItem
         }
     }
 
-
-    ToolBar
+    TextArea
     {
-        id : toolBarComments
-        style: ToolBarStyle {}
-
-        RowLayout
+        id : textAreaComment
+        anchors
         {
-            ToolButton
-            {
-
-                visible : mainForum.state == "comments" ? true : false
-
-                action : Action
-                {
-                id : addComment
-                iconSource  : "qrc:/ZcBoard/Resources/plus.png"
-                tooltip     : "Add a comment"
-                onTriggered :
-                {
-                    mainForum.state = "addComments"
-                    textAreaComment.focus = true
-                    textAreaComment.forceActiveFocus();
-                    textAreaComment.text = ""
-                }
-            }
+            top : toolBarComments.bottom
+            topMargin : 5
+            horizontalCenter : parent.horizontalCenter
         }
-            ToolButton
-            {
-            visible : mainForum.state === "comments" ? false : true
 
-            action : Action
+        style : TextAreaStyle {  transientScrollBars : false; backgroundColor: Qt.lighter("#ff6600") }
+
+        width : parent.width - 10
+
+        height : mainView.idItemFocused === idItem ? 50 : 0
+        visible : mainView.idItemFocused === idItem //mainForum.state == "addComments"
+//        onVisibleChanged:
+//        {
+//            if (visible)
+//                textAreaComment.text = ""
+//        }
+
+        //mainForum.state == "addComments" ? 100 : 0
+        //visible : mainForum.state == "addComments"
+
+        wrapMode: TextEdit.WordWrap
+
+        Keys.onPressed:
+        {
+
+            if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return)
             {
-            id : validateComment
-            iconSource  : "qrc:/ZcBoard/Resources/validate.png"
-            tooltip     : "Validate the comment"
-            onTriggered :
-            {
+                event.accepted = true
+
                 if (textAreaComment.text === "")
                     return;
 
@@ -223,55 +218,28 @@ FocusScope
                 element.title = mainForum.title
                 element.comments = [];
 
-                Tools.forEachInListModel(comments, function(x) {
-                  var o = {};
-                  o.who = x.who
-                  o.date = x.date;
-                  o.comment = x.comment;
-                  element.comments.unshift(o)
-                });
-
                 var newElemnt = {}
                 newElemnt.who = mainView.context.nickname
                 newElemnt.comment = textAreaComment.text
                 newElemnt.date = new Date().getTime()
 
-                element.comments.unshift(newElemnt)
+                element.comments.push(newElemnt)
+
+                Tools.forEachInListModel(comments, function(x) {
+                    var o = {};
+                    o.who = x.who
+                    o.date = x.date;
+                    o.comment = x.comment;
+                    element.comments.push(o)
+                });
+
 
                 mainView.addComments(idItem,JSON.stringify(element))
-                mainForum.state = "comments"
-
+                textAreaComment.text = ""
+                mainView.idItemFocused = ""
             }
         }
     }
-            ToolButton
-            {
-    visible : mainForum.state === "comments" ? false : true
-
-    action : Action
-    {
-    id : cancelComment
-    iconSource  : "qrc:/ZcBoard/Resources/cancel.png"
-    tooltip     : "Cancel the comment"
-    onTriggered :
-    {
-        mainForum.state = "comments"
-    }
-}
-}
-
-        Label
-        {
-    height : parent.height
-
-    text : mainForum.title
-
-    font.pixelSize: 16
-
-    visible : mainForum.state == "comments" ? true : false
-}
-}
-}
 
 
 
@@ -393,191 +361,191 @@ FocusScope
 
     Component
     {
-            id : commentDelegateComponent
+        id : commentDelegateComponent
 
-                Item
-                {
-                    id : commentDelegate
+        Item
+        {
+            id : commentDelegate
 
-                    property alias contactImageSource : contactImage.source
+            property alias contactImageSource : contactImage.source
 
-                    height : 50
-                    width : parent.width
+            height : 50
+            width : parent.width
 
 
-                    /*
+            /*
                     ** Contact Image
                     ** default contact image set
                     */
-                    Image
-                    {
-                        id : contactImage
+            Image
+            {
+                id : contactImage
 
-                        width  : 50
-                        height : width
+                width  : 50
+                height : width
+
+                anchors
+                {
+                    top        : parent.top
+                    topMargin  : 2
+                    left       : parent.left
+                    leftMargin : 2
+                }
+
+
+                source : activity.getParticipantImageUrl(model.who)
+
+                onStatusChanged:
+                {
+                    if (status === Image.Error)
+                    {
+                        source = "qrc:/Crowd.Core/Qml/Ressources/Pictures/DefaultUser.png"
+                    }
+                }
+            }
+
+            Item
+            {
+                id : textZone
+
+                anchors.top : parent.top
+                anchors.left : contactImage.right
+                anchors.leftMargin : 5
+
+
+                height : 50
+                width : parent.width - 60
+
+
+                property string url : ""
+
+
+                function updateDelegate(text)
+                {
+
+                    textEdit.text = text;
+
+
+                    var ligneHeight =  textEdit.lineCount * 17
+
+                    var finalHeight = 28 + ligneHeight;
+
+                    if (finalHeight < 70 )
+                        finalHeight = 70;
+
+                    textZone.height = finalHeight;
+                    commentDelegate.height = finalHeight;
+                }
+
+                Component.onCompleted:
+                {
+                    updateDelegate(model.comment);
+                }
+
+
+
+                Label
+                {
+                    id                      : fromId
+                    text                    : model.who
+                    color                   : "black"
+                    font.pixelSize          : appStyleId.baseTextHeigth
+                    anchors
+                    {
+                        top             : parent.top
+                        left            : parent.left
+                        leftMargin      : 5
+                    }
+
+                    maximumLineCount        : 1
+                    font.bold               : true
+                    elide                   : Text.ElideRight
+                    wrapMode                : Text.WrapAnywhere
+                }
+
+
+                Label
+                {
+                    function getDate(x)
+                    {
+                        if (x !== null && x !== undefined && x !== "")
+                        {
+                            return new Date(parseInt(x)).toDateString();
+                        }
+                        return new Date(0).toDateString();
+                    }
+
+                    id                      : timeStampId
+                    text                    : getDate(model.date)
+                    font.pixelSize          : 10
+                    font.italic 			: true
+                    anchors
+                    {
+                        top             : parent.top
+                        right           : parent.right
+                        rightMargin     : 2
+                    }
+                    maximumLineCount        : 1
+                    elide                   : Text.ElideRight
+                    wrapMode                : Text.WrapAnywhere
+                    color                   : "gray"
+
+                    horizontalAlignment: Text.AlignRight
+                }
+
+
+                Item
+                {
+
+                    clip : true
+
+                    anchors
+                    {
+                        top        : fromId.bottom
+                        left       : parent.left
+                        leftMargin : 25
+                        right      : parent.right
+                        rightMargin: 5
+                        bottom     : parent.bottom
+                    }
+
+                    TextEdit
+                    {
+                        id  : textEdit
+                        color : "black"
+
+                        textFormat: Text.RichText
 
                         anchors
                         {
-                            top        : parent.top
-                            topMargin  : 2
-                            left       : parent.left
-                            leftMargin : 2
+                            top         : parent.top
+                            left        : parent.left
+                            leftMargin  : 5
+                            right       : parent.right
+                            bottom      : parent.bottom
                         }
 
+                        readOnly                : true
+                        selectByMouse           : true
+                        font.pixelSize          : 14
+                        wrapMode                : TextEdit.WrapAtWordBoundaryOrAnywhere
 
-                        source : activity.getParticipantImageUrl(model.who)
-
-                        onStatusChanged:
-                        {
-                            if (status === Image.Error)
-                            {
-                                source = "qrc:/Crowd.Core/Qml/Ressources/Pictures/DefaultUser.png"
-                            }
-                        }
-                    }
-
-                    Item
-                    {
-                        id : textZone
-
-                        anchors.top : parent.top
-                        anchors.left : contactImage.right
-                        anchors.leftMargin : 5
-
-
-                        height : 50
-                        width : parent.width - 60
-
-
-                        property string url : ""
-
-
-                        function updateDelegate(text)
-                        {
-
-                            textEdit.text = text;
-
-
-                            var ligneHeight =  textEdit.lineCount * 17
-
-                            var finalHeight = 28 + ligneHeight;
-
-                            if (finalHeight < 70 )
-                                finalHeight = 70;
-
-                            textZone.height = finalHeight;
-                            commentDelegate.height = finalHeight;
-                        }
-
-                        Component.onCompleted:
-                        {
-                            updateDelegate(model.comment);
-                        }
-
-
-
-                        Label
-                        {
-                            id                      : fromId
-                            text                    : model.who
-                            color                   : "black"
-                            font.pixelSize          : appStyleId.baseTextHeigth
-                            anchors
-                            {
-                                top             : parent.top
-                                left            : parent.left
-                                leftMargin      : 5
-                            }
-
-                            maximumLineCount        : 1
-                            font.bold               : true
-                            elide                   : Text.ElideRight
-                            wrapMode                : Text.WrapAnywhere
-                        }
-
-
-                        Label
-                        {
-                            function getDate(x)
-                            {
-                                if (x !== null && x !== undefined && x !== "")
-                                {
-                                    return new Date(parseInt(x)).toDateString();
-                                }
-                                return new Date(0).toDateString();
-                            }
-
-                            id                      : timeStampId
-                            text                    : getDate(model.date)
-                            font.pixelSize          : 10
-                            font.italic 			: true
-                            anchors
-                            {
-                                top             : parent.top
-                                right           : parent.right
-                                rightMargin     : 2
-                            }
-                            maximumLineCount        : 1
-                            elide                   : Text.ElideRight
-                            wrapMode                : Text.WrapAnywhere
-                            color                   : "gray"
-
-                            horizontalAlignment: Text.AlignRight
-                        }
-
-
-                        Item
-                        {
-
-                            clip : true
-
-                            anchors
-                            {
-                                top        : fromId.bottom
-                                left       : parent.left
-                                leftMargin : 25
-                                right      : parent.right
-                                rightMargin: 5
-                                bottom     : parent.bottom
-                            }
-
-                            TextEdit
-                            {
-                                id  : textEdit
-                                color : "black"
-
-                                textFormat: Text.RichText
-
-                                anchors
-                                {
-                                    top         : parent.top
-                                    left        : parent.left
-                                    leftMargin  : 5
-                                    right       : parent.right
-                                    bottom      : parent.bottom
-                                }
-
-                                readOnly                : true
-                                selectByMouse           : true
-                                font.pixelSize          : 14
-                                wrapMode                : TextEdit.WrapAtWordBoundaryOrAnywhere
-
-                            }
-
-                        }
-                    }
-
-                    Rectangle
-                    {
-                        height : 1
-                        width : parent.width - 10
-                        anchors.bottom: parent.bottom
-                        anchors.horizontalCenter: parent.horizontalCenter
-
-                        color : "grey"
                     }
 
                 }
+            }
+
+            Rectangle
+            {
+                height : 1
+                width : parent.width - 10
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                color : "grey"
+            }
+
+        }
 
     }
 
