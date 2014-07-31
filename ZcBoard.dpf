@@ -267,6 +267,16 @@
             <QtResourceFile FileName="cancel.png">
               <Properties>
                 <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="ZcBoard.png">
+              <Properties>
+                <BuildAction value="Compile" />
               </Properties>
               <Items />
             </QtResourceFile>
