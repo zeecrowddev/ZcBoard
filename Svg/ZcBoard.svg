@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="ZcBoard.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="6.625"
+     inkscape:cx="167.18193"
+     inkscape:cy="797.51401"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1003"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:0.98999999000000005;fill:#800000;fill-opacity:0.87058824000000001;fill-rule:nonzero;stroke:none"
+       id="rect3838"
+       width="120"
+       height="120"
+       x="107.18193"
+       y="194.84818"
+       inkscape:export-filename="C:\github\ZcBoard\Packages\ZcBoard.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3010"
+       width="89.318283"
+       height="63.812702"
+       x="125.04559"
+       y="217.96246"
+       inkscape:export-filename="C:\github\ZcBoard\Packages\ZcBoard.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:4.2316227;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 167.01922,207.1706 0,89.18129"
+       id="path3018"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\github\ZcBoard\Packages\ZcBoard.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ff0000;stroke:#ffffff;stroke-width:4.54318619;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 162.47021,208.95721 134.7667,305.06019"
+       id="path3018-4"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\github\ZcBoard\Packages\ZcBoard.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:4.52733564;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 171.95877,208.50278 27.32026,96.78872"
+       id="path3018-4-3"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\github\ZcBoard\Packages\ZcBoard.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:0.98999999;fill:#800000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3012"
+       width="62.940063"
+       height="41.63118"
+       x="137.9568"
+       y="229.73578"
+       inkscape:export-filename="C:\github\ZcBoard\Packages\ZcBoard.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
