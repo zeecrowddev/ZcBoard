@@ -89,7 +89,7 @@ Item
         comment.date = new Date().getTime()
         forum.comments.push(comment)
 
-        mainView.createANewForum("",JSON.stringify(forum))
+        mainView.createANewForum("",textFieldLabel.text,textAreaComment.text,JSON.stringify(forum))
     }
 }
 }

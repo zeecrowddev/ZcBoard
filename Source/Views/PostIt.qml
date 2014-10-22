@@ -36,6 +36,8 @@ FocusScope
     property string idItem  : "";
     property alias  text    : textArea.text
 
+    property string lastTextSent : ""
+
     property string postItColor : "yellow"
 
     x : 0
@@ -76,28 +78,6 @@ FocusScope
                 bottom     : mouseAreaItem.top
             }
 
-
-
-            //            PropertyChanges
-            //            {
-            //                target      : grow
-            //                visible     : true
-            //            }
-            //            PropertyChanges
-            //            {
-            //                target      : close
-            //                visible     : true
-            //            }
-            //            PropertyChanges
-            //            {
-            //                target      : toback
-            //                visible     : true
-            //            }
-            //            PropertyChanges
-            //            {
-            //                target      : tofront
-            //                visible     : true
-            //            }
         },
         State
         {
@@ -114,33 +94,6 @@ FocusScope
                 target      : mouseArea.anchors;
                 bottom     : postIt.bottom
             }
-
-            //            PropertyChanges
-            //            {
-            //                target      : grow
-            //                visible    : false
-            //            }
-            //            PropertyChanges
-            //            {
-            //                target      : close
-            //                visible    : false
-            //            }
-            //            PropertyChanges
-            //            {
-            //                target      : toback
-            //                visible     : false
-            //            }
-            //            PropertyChanges
-            //            {
-            //                target      : tofront
-            //                visible     : false
-            //            }
-            //            PropertyChanges
-            //            {
-            //                target      : validate
-            //                visible     : false
-            //                enabled     : false
-            //            }
         }
     ]
 
@@ -184,7 +137,11 @@ FocusScope
             {
                 if (activeFocus === false)
                 {
-                    postItTextChanged(text);
+                    if (text !== lastTextSent)
+                    {
+                        lastTextSent = textArea.text
+                        postItTextChanged(text);
+                    }
                 }
 
             }
@@ -356,7 +313,11 @@ FocusScope
             anchors.fill: parent
             onClicked:
             {
-                postIt.postItTextChanged(textArea.text)
+                if (textArea.text != lastTextSent)
+                {
+                    lastTextSent = textArea.text
+                    postIt.postItTextChanged(textArea.text)
+                }
                 validate.visible = false;
                 enabled.visible = false;
                 mainView.idItemFocused = ""

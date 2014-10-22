@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/ZcBoard">
+        <file>Packages/ZcBoard.cfg</file>
+        <file>Resources/addUrl.png</file>
+        <file>Resources/back.png</file>
+        <file>Resources/bin.png</file>
+        <file>Resources/cancel.png</file>
+        <file>Resources/close.png</file>
+        <file>Resources/eye.png</file>
+        <file>Resources/forum.png</file>
+        <file>Resources/next.png</file>
+        <file>Resources/plus.png</file>
+        <file>Resources/postit_blue.png</file>
+        <file>Resources/postit_blue_icon.png</file>
+        <file>Resources/postit_green.png</file>
+        <file>Resources/postit_green_icon.png</file>
+        <file>Resources/postit_pink.png</file>
+        <file>Resources/postit_pink_icon.png</file>
+        <file>Resources/postit_yekkow_icon.png</file>
+        <file>Resources/postit_yellow.png</file>
+        <file>Resources/postit_yellow_icon.png</file>
+        <file>Resources/tack.png</file>
+        <file>Resources/toBack.png</file>
+        <file>Resources/toFront.png</file>
+        <file>Resources/validate.png</file>
+        <file>Resources/ZcBoard.png</file>
+        <file>Views/Board.qml</file>
+        <file>Views/ForumElement.qml</file>
+        <file>Views/ForumViewer.qml</file>
+        <file>Views/ImageElement.qml</file>
+        <file>Views/main.qml</file>
+        <file>Views/mainPresenter.js</file>
+        <file>Views/PostIt.qml</file>
+        <file>Views/SplashScreen.qml</file>
+        <file>Views/Tools.js</file>
+        <file>Views/UploadScreen.qml</file>
+        <file>Views/WebViewElement.qml</file>
+        <file>Views/WebViewer.qml</file>
+    </qresource>
+</RCC>

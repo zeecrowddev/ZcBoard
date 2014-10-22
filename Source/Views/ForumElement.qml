@@ -172,7 +172,6 @@ FocusScope
 
         onClicked:
         {
-            console.log(">> CLICKED")
             mainView.idItemFocused = idItem
         }
     }
@@ -234,7 +233,7 @@ FocusScope
                 });
 
 
-                mainView.addComments(idItem,JSON.stringify(element))
+                mainView.addComments(idItem,mainForum.title,textAreaComment.text,JSON.stringify(element))
                 textAreaComment.text = ""
                 mainView.idItemFocused = ""
             }

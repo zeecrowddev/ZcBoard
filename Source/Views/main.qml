@@ -137,8 +137,6 @@ Zc.AppView
 
     function updateWebView(idItem,webViewDefinition)
     {
-         console.log(">> webViewDefinition.url " + webViewDefinition.url)
-
         var webView = null;
         if (Presenter.instance[idItem] === undefined ||
                 Presenter.instance[idItem] === null)
@@ -205,6 +203,18 @@ Zc.AppView
         id : zcResourceDescriptorId
     }
 
+    Zc.AppNotification
+    {
+        id : appNotification
+    }
+
+    onIsCurrentViewChanged :
+    {
+        if (isCurrentView == true)
+        {
+            appNotification.resetNotification();
+        }
+    }
 
     property int zMax : 0;
     property string idItemFocused : ""
@@ -320,7 +330,6 @@ Zc.AppView
         height: parent.height
     }
 
-
     Component
     {
         id : postItComponent
@@ -353,15 +362,20 @@ Zc.AppView
 
             onPostItTextChanged:
             {
-
                 if (visible)
                 {
                     var o =  Tools.parseDatas(elementDefinition.getItem(idItem,""));
-                    o.text = newText
-                    elementDefinition.setItem(idItem,JSON.stringify(o));
+
+
+                    if (o.text !== newText)
+                    {
+                        var modif = o.text === "" || o.text === null
+                        o.text = newText
+                        elementDefinition.setItem(idItem,JSON.stringify(o));
+                        appNotification.logEvent( modif ? Zc.AppNotification.Modify : Zc.AppNotification.Add,"Post It",o.text,"")
+                    }
                 }
             }
-
         }
     }
 
@@ -452,18 +466,21 @@ Zc.AppView
         documentFolder.uploadFile(".web/" + uploadScreenId.idItem,grabPath,queryStatusForAddUrlDocumentFolder)
     }
 
-    function addComments(idItem,forum)
+    function addComments(idItem,title,newtext,forum)
     {
         uploadScreenId.visible = true
 
         uploadScreenId.type = "Forum"
         uploadScreenId.idItem = idItem
 
+        queryStatusForAddCommentDocumentFolder.title = title
+        queryStatusForAddCommentDocumentFolder.newComment = newtext
+
         documentFolder.putText(".forum/" + uploadScreenId.idItem + "_txt",forum,queryStatusForAddCommentDocumentFolder);
     }
 
 
-    function createANewForum(idItem,forum)
+    function createANewForum(idItem,title,newtext,forum)
     {
         if (idItem === null || idItem === "")
         {
@@ -481,8 +498,11 @@ Zc.AppView
         uploadScreenId.type = "Forum"
         uploadScreenId.idItem = idItem
 
+        queryStatusForAddCommentDocumentFolder.title = title
+        queryStatusForAddCommentDocumentFolder.newComment = newtext
+
         documentFolder.putText(".forum/" + uploadScreenId.idItem + "_txt",forum,queryStatusForAddCommentDocumentFolder);
-    }
+     }
 
     function generateId()
     {
@@ -527,6 +547,7 @@ Zc.AppView
                     element.id = uploadScreenId.idItem
                     elementDefinition.setItem(element.id,JSON.stringify(element));
                     uploadScreenId.visible = false;
+                    appNotification.logEvent(Zc.AppNotification.Add,"Picture","",documentFolder.getUrl(".image/"+ uploadScreenId.idItem))
                 }
             }
 
@@ -551,12 +572,18 @@ Zc.AppView
 
                     elementDefinition.setItem(element.id,JSON.stringify(element));
                     uploadScreenId.visible = false;
+
+                    appNotification.logEvent(Zc.AppNotification.Add,"Url",uploadScreenId.url,documentFolder.getUrl(".web/"+ uploadScreenId.idItem))
+
                 }
             }
 
             Zc.StorageQueryStatus
             {
                 id : queryStatusForAddCommentDocumentFolder
+
+                property string title : ""
+                property string newComment : ""
 
                 onProgress :
                 {
@@ -574,6 +601,9 @@ Zc.AppView
 
                     // on notifie que le comment a changé
                     senderCommentNotify.sendMessage("",uploadScreenId.idItem)
+
+                    appNotification.logEvent(Zc.AppNotification.Add,"Smart Forum \n" + title,newComment,"")
+
 
                     uploadScreenId.visible = false;
                 }
@@ -611,7 +641,6 @@ Zc.AppView
                 }}
 
         }
-
 
         Zc.CrowdActivityItems
         {
@@ -677,6 +706,12 @@ Zc.AppView
             onItemChanged :
             {
                 addOrUpdateItemFromIdItem(idItem)
+
+                appNotification.blink();
+                if (!mainView.isCurrentView)
+                {
+                    appNotification.incrementNotification();
+                }
             }
 
             onItemDeleted :
@@ -689,7 +724,6 @@ Zc.AppView
                 Presenter.instance[idItem] = null;
             }
         }
-
 
         Zc.MessageSender
         {
