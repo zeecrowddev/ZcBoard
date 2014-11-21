@@ -21,7 +21,6 @@
 
 
 import QtQuick 2.2
-import QtWebKit 3.0
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
@@ -67,29 +66,29 @@ Item
                     id : downloadAction
                     iconSource  : "qrc:/ZcBoard/Resources/back.png"
                     tooltip     : "Back"
-                    enabled  : webView.canGoBack
+                    enabled  : webView.item === null ? false : webView.item.canGoBack
                     onTriggered :
                     {
-                        webView.goBack()
+                        webView.item.goBack()
                     }
                 }
             }
-                ToolButton
-                {
+            ToolButton
+            {
                 action : Action
                 {
                 id : nextId
                 iconSource  : "qrc:/ZcBoard/Resources/next.png"
                 tooltip     : "Next"
-                enabled  : webView.canGoForward
+                enabled  : webView.item === null ? false : webView.canGoForward
                 onTriggered :
                 {
-                    webView.goForward()
+                    webView.item.goForward()
                 }
             }
         }
-                ToolButton
-                {
+        ToolButton
+        {
             action : Action
             {
             id : closeId
@@ -102,29 +101,29 @@ Item
             }
         }
     }
-                ToolButton
-                {
-                    visible : webView.url.toString() !== null && webView.url.toString() !== "" && !webView.loading
-    action : Action
+    ToolButton
     {
-    iconSource  : "qrc:/ZcBoard/Resources/validate.png"
-    tooltip     : "Add to the board"
-    onTriggered :
-    {
+        visible : webView.item !== null && webView.item.url.toString() !== null && webView.item.url.toString() !== "" && !webView.item.loading
+        action : Action
+        {
+        iconSource  : "qrc:/ZcBoard/Resources/validate.png"
+        tooltip     : "Add to the board"
+        onTriggered :
+        {
 
-        var tmpx = mainView.x + webViewContainer.x + scrollView.x + scrollView.flickableItem.contentX
-        var tmpy = mainView.y + webViewContainer.y + scrollView.y + scrollView.flickableItem.contentY
-        var val =  mainView.mapToItem(null,tmpx,tmpy)
+            var tmpx = mainView.x + webViewContainer.x + scrollView.x + scrollView.flickableItem.contentX
+            var tmpy = mainView.y + webViewContainer.y + scrollView.y + scrollView.flickableItem.contentY
+            var val =  mainView.mapToItem(null,tmpx,tmpy)
 
-        mainView.grabWindow(mainView.context.temporaryPath + "web_grap.png" ,val.x,val.y,webView.width,webView.height);
+            mainView.grabWindow(mainView.context.temporaryPath + "web_grap.png" ,val.x,val.y,webView.width,webView.height);
 
-        mainView.addUrlRessource(mainView.context.temporaryPath + "web_grap.png",webView.url.toString())
-        mainView.hideLoader()
+            mainView.addUrlRessource(mainView.context.temporaryPath + "web_grap.png",webView.item.url.toString())
+            mainView.hideLoader()
+        }
     }
 }
 }
-            }
-        }
+}
 
 
 Rectangle
@@ -147,7 +146,7 @@ Rectangle
         id          : progressBarId
 
 
-        width : parent.width * webView.loadProgress / 100
+        width : webView.item === null ? 0 : parent.width * webView.item.loadProgress / 100
 
         color       : "red"
         anchors
@@ -173,11 +172,11 @@ TextField
 
     font.pixelSize: 16
 
-    text : webView.url
+    text : webView === null ? "" : webView.item.url
 
     onAccepted:
     {
-        webView.url = text
+        webView.item.url = text
     }
 
     Component.onCompleted:
@@ -200,12 +199,29 @@ ScrollView
     style : ScrollViewStyle {}
 
 
-    WebView
+    Item
     {
-        id : webView
-
 
         anchors.fill: parent
+
+        Loader
+        {
+            id : webView
+            width : scrollView.width
+            height : scrollView.height
+            Component.onCompleted:
+            {
+                if (Qt.platform.os === "osx")
+                {
+                    source = "qrc:/ZcBoard/Views/WebView/WebView1.1.qml"
+                }
+                else
+                {
+                    source = "qrc:/ZcBoard/Views/WebView/WebView3.0.qml"
+                }
+            }
+        }
+
     }
 }
 

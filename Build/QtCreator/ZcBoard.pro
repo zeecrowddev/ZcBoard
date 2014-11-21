@@ -47,7 +47,9 @@ OTHER_FILES += \
     ../../Source/Resources/toFront.png \
     ../../Source/Resources/validate.png \
     ../../Source/Resources/ZcBoard.png \
-    ../../Source/Packages/ZcBoard.cfg
+    ../../Source/Packages/ZcBoard.cfg \
+    ../../Source/Views/WebView/WebView1.1.qml \
+    ../../Source/Views/WebView/WebView3.0.qml
 
 RESOURCES += \
     ../../Source/ZcBoard.qrc
