@@ -34,6 +34,8 @@ Zc.AppView
 
     anchors.fill : parent
 
+    property bool useWebView : false
+
     function updatePostIt(idItem,postItDefinition)
     {
         var postIt = null;
@@ -270,6 +272,7 @@ Zc.AppView
             id: addUrl
             tooltip : "Add a web page"
             iconSource : "qrc:/ZcBoard/Resources/addUrl.png"
+            visible : mainView.useWebView
             onTriggered:
             {
                 showLoader("qrc:/ZcBoard/Views/WebViewer.qml")
@@ -753,6 +756,15 @@ Zc.AppView
     {
         Presenter.initPresenter()
         activity.start();
+
+        if (Qt.platform === "windows")
+        {
+            mainView.useWebView = true
+        }
+        else
+        {
+            mainView.useWebView = mainView.context.getQtModuleVersion("QtWebKit") !== "";
+        }
     }
 
     onClosed :

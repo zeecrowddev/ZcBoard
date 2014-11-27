@@ -211,9 +211,10 @@ ScrollView
             height : scrollView.height
             Component.onCompleted:
             {
-                if (Qt.platform.os === "osx")
+
+                if (mainView.useWebView)
                 {
-                    source = "qrc:/ZcBoard/Views/WebView/WebView1.1.qml"
+                    source = "qrc:/ZcBoard/Views/WebView/NoWebView.qml"
                 }
                 else
                 {

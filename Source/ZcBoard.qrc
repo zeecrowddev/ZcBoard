@@ -36,7 +36,7 @@
         <file>Views/UploadScreen.qml</file>
         <file>Views/WebViewElement.qml</file>
         <file>Views/WebViewer.qml</file>
-        <file>Views/WebView/WebView1.1.qml</file>
         <file>Views/WebView/WebView3.0.qml</file>
+        <file>Views/WebView/NoWebView.qml</file>
     </qresource>
 </RCC>
