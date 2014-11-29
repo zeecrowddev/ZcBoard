@@ -212,7 +212,7 @@ ScrollView
             Component.onCompleted:
             {
 
-                if (mainView.useWebView)
+                if (!mainView.useWebView)
                 {
                     source = "qrc:/ZcBoard/Views/WebView/NoWebView.qml"
                 }

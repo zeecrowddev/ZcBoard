@@ -272,7 +272,7 @@ Zc.AppView
             id: addUrl
             tooltip : "Add a web page"
             iconSource : "qrc:/ZcBoard/Resources/addUrl.png"
-            visible : mainView.useWebView
+            enabled: mainView.useWebView
             onTriggered:
             {
                 showLoader("qrc:/ZcBoard/Views/WebViewer.qml")
@@ -757,7 +757,7 @@ Zc.AppView
         Presenter.initPresenter()
         activity.start();
 
-        if (Qt.platform === "windows")
+        if (Qt.platform.os === "windows")
         {
             mainView.useWebView = true
         }
@@ -765,7 +765,7 @@ Zc.AppView
         {
             mainView.useWebView = mainView.context.getQtModuleVersion("QtWebKit") !== "";
         }
-    }
+ }
 
     onClosed :
     {
