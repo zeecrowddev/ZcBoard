@@ -212,13 +212,17 @@ ScrollView
             Component.onCompleted:
             {
 
-                if (!mainView.useWebView)
+                if (mainView.useWebView === "")
                 {
                     source = "qrc:/ZcBoard/Views/WebView/NoWebView.qml"
                 }
-                else
+                else if (mainView.useWebView === "WebKit")
                 {
-                    source = "qrc:/ZcBoard/Views/WebView/WebView3.0.qml"
+                    source = "qrc:/ZcBoard/Views/WebView/WebKit3.0.qml"
+                }
+                else if (mainView.useWebView === "WebView")
+                {
+                    source = "qrc:/ZcBoard/Views/WebView/WebView1.0.qml"
                 }
             }
         }

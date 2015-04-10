@@ -48,8 +48,11 @@ OTHER_FILES += \
     ../../Source/Resources/validate.png \
     ../../Source/Resources/ZcBoard.png \
     ../../Source/Packages/ZcBoard.cfg \
-    ../../Source/Views/WebView/WebView3.0.qml \
     ../../Source/Views/WebView/NoWebView.qml
 
 RESOURCES += \
     ../../Source/ZcBoard.qrc
+
+DISTFILES += \
+    ../../Source/Views/WebView/WebKit3.0.qml \
+    ../../Source/Views/WebView/WebView1.0.qml

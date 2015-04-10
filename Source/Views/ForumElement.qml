@@ -191,23 +191,23 @@ FocusScope
         width : parent.width - 10
 
         height : mainView.idItemFocused === idItem ? 50 : 0
-        visible : mainView.idItemFocused === idItem //mainForum.state == "addComments"
-//        onVisibleChanged:
-//        {
-//            if (visible)
-//                textAreaComment.text = ""
-//        }
+        visible : mainView.idItemFocused === idItem
 
-        //mainForum.state == "addComments" ? 100 : 0
-        //visible : mainForum.state == "addComments"
+        onVisibleChanged:
+        {
+            if (visible === false)
+                textAreaComment.focus = false
+        }
 
         wrapMode: TextEdit.WordWrap
 
         Keys.onPressed:
         {
+            textAreaComment.focus = false
 
             if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return)
             {
+
                 event.accepted = true
 
                 if (textAreaComment.text === "")

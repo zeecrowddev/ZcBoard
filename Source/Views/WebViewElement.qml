@@ -54,8 +54,8 @@ FocusScope
 
         color : "white"
 
-        border.width : 1
-        border.color : "black"
+        border.width : 3
+        border.color : "white"
 
         clip : true
 

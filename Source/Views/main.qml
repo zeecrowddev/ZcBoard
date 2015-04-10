@@ -34,7 +34,7 @@ Zc.AppView
 
     anchors.fill : parent
 
-    property bool useWebView : false
+    property string useWebView : ""
 
     function updatePostIt(idItem,postItDefinition)
     {
@@ -239,6 +239,8 @@ Zc.AppView
             tooltip : "Close Aplication"
             onTriggered:
             {
+                board.focus = false;
+                Qt.inputMethod.hide();
                 mainView.closeTask();
             }
         },
@@ -272,7 +274,7 @@ Zc.AppView
             id: addUrl
             tooltip : "Add a web page"
             iconSource : "qrc:/ZcBoard/Resources/addUrl.png"
-            enabled: mainView.useWebView
+            enabled: mainView.useWebView !== ""
             onTriggered:
             {
                 showLoader("qrc:/ZcBoard/Views/WebViewer.qml")
@@ -757,13 +759,23 @@ Zc.AppView
         Presenter.initPresenter()
         activity.start();
 
+        var webViewVersion =  mainView.context.getQtModuleVersion("QtWebView") !== "";
+        var webKitVersion =  mainView.context.getQtModuleVersion("QtWebKit") !== "";
+        mainView.useWebView = "";
+
         if (Qt.platform.os === "windows")
         {
-            mainView.useWebView = true
+            if (webViewVersion !== null && webViewVersion !== undefined)
+                mainView.useWebView = "WebView"
+            else
+                mainView.useWebView = "WebKit"
         }
         else
         {
-            mainView.useWebView = mainView.context.getQtModuleVersion("QtWebKit") !== "";
+            if (webViewVersion !== null && webViewVersion !== undefined)
+                mainView.useWebView = "WebView"
+            else if (webKitVersion !== null && webKitVersion !== undefined)
+                mainView.useWebView = "WebKit"
         }
  }
 

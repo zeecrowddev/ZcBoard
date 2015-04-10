@@ -137,6 +137,7 @@ FocusScope
             {
                 if (activeFocus === false)
                 {
+                    textArea.focus = false;
                     if (text !== lastTextSent)
                     {
                         lastTextSent = textArea.text
@@ -313,6 +314,7 @@ FocusScope
             anchors.fill: parent
             onClicked:
             {
+                textArea.focus = false;
                 if (textArea.text != lastTextSent)
                 {
                     lastTextSent = textArea.text

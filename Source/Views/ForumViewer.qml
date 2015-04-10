@@ -65,6 +65,8 @@ Item
             enabled : true
             onTriggered :
             {
+                textAreaComment.focus = false;
+                textFieldLabel.focus = false;
                 mainView.hideLoader()
             }
         }
@@ -78,6 +80,9 @@ Item
     tooltip     : "Add to the board"
     onTriggered :
     {
+        textAreaComment.focus = false;
+        textFieldLabel.focus = false;
+
         mainView.hideLoader()
 
         var forum = {}
