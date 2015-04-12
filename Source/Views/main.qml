@@ -36,6 +36,7 @@ Zc.AppView
 
     property string useWebView : ""
 
+
     function updatePostIt(idItem,postItDefinition)
     {
         var postIt = null;
@@ -215,6 +216,18 @@ Zc.AppView
         if (isCurrentView == true)
         {
             appNotification.resetNotification();
+
+            if (loaderType === "WebViewer" && loader.item !== null && loader.item !== undefined)
+            {
+                loader.item.showWebViewIfNecessary();
+            }
+        }
+        else
+        {
+            if (loaderType === "WebViewer"  && loader.item !== null && loader.item !== undefined)
+            {
+                loader.item.hideWebViewIfNecessary();
+            }
         }
     }
 
@@ -276,8 +289,8 @@ Zc.AppView
             iconSource : "qrc:/ZcBoard/Resources/addUrl.png"
             enabled: mainView.useWebView !== ""
             onTriggered:
-            {
-                showLoader("qrc:/ZcBoard/Views/WebViewer.qml")
+            {                
+                showLoader("qrc:/ZcBoard/Views/WebViewer.qml","WebViewer")
             }
         }
         ,
@@ -287,7 +300,7 @@ Zc.AppView
             iconSource : "qrc:/ZcBoard/Resources/forum.png"
             onTriggered:
             {
-                showLoader("qrc:/ZcBoard/Views/ForumViewer.qml")
+                showLoader("qrc:/ZcBoard/Views/ForumViewer.qml","ForumViewer")
             }
         }
 
@@ -798,8 +811,11 @@ Zc.AppView
         }
     }
 
-    function showLoader(source)
+    property string loaderType : ""
+
+    function showLoader(source,ltype)
     {
+        loaderType = ltype;
         loader.source = source;
         loader.visible = true
     }

@@ -33,6 +33,22 @@ Item
 
     signal addUrl(string url)
 
+    function showWebViewIfNecessary()
+    {
+        if (webView.item !== null && webView.item !== undefined)
+        {
+            webView.item.visible = true
+        }
+    }
+
+    function hideWebViewIfNecessary()
+    {
+        if (webView.item !== null && webView.item !== undefined)
+        {
+            webView.item.visible = false
+        }
+    }
+
 
     Rectangle
     {
@@ -174,8 +190,10 @@ TextField
 
     text : webView === null ? "" : webView.item.url
 
+
     onAccepted:
     {
+        textFieldUrl.focus = false;
         webView.item.url = text
     }
 
